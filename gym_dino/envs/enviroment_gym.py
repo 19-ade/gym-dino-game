@@ -23,6 +23,8 @@ class enviroment(gym.Env):
         self.current_frame=self.observation_space.low
         self.action_set=[0,1]
 
+    def get_score(self):
+        return self.game.score()
     def step(self,action):
 
 
@@ -32,10 +34,11 @@ class enviroment(gym.Env):
         observation=self.screen()
 
         if self.game.crash():
-            reward=self.crashed
+            reward=(self.crashed)*(11.0/self.get_score())
+
             done=True
         else:
-            reward=self.running
+            reward=(self.running * self.get_score())/10
             done=False
 
         info={}
@@ -43,8 +46,7 @@ class enviroment(gym.Env):
     def reset(self ,record=False):
         self.game.restart()
         return self.screen()
-    def get_score(self):
-        return self.game.score()
+
     def screen(self):
         s= self.game.get_canvas()#retruns a base64 encoded pic
         i=io.BytesIO(base64.b64decode(s))
