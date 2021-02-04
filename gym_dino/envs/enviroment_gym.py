@@ -38,7 +38,7 @@ class enviroment(gym.Env):
 
             done=True
         else:
-            reward=(self.running * self.get_score())/10
+            reward=(self.get_score())/10
             done=False
 
         info={}
